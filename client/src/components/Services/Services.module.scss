@@ -1,0 +1,65 @@
+@import './src/style/mixins/flex';
+
+.services {
+  @include flex();
+  background-color: #0f0e13;
+  background-image: radial-gradient(at 0% 0%,hsla(253,16%,7%,1) 0,transparent 50%),radial-gradient(at 50% 100%,hsla(225,39%,25%,1) 0,transparent 50%);
+  &__container {
+    @include flex();
+
+    &_first {
+      @include flex(space-between);
+      padding: 5rem;
+      h1 {
+        font-size: 3rem;
+        font-weight: 400;
+        line-height: 1;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        background-color: #fff;
+        background-image: radial-gradient(at 4% 36%,hsla(0,0%,100%,1) 0,transparent 53%),radial-gradient(at 100% 60%,rgb(0,0,0) 0,transparent 50%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+
+    &_second {
+      @include flex(flex-start, center, column);
+
+      &_card {
+        padding: 0.75rem;
+        margin: 0.5rem;
+        @include flex(flex-start);
+        cursor: pointer;
+        background: rgba(255,255,255,.05);
+        border-radius: 16px;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,.3);
+
+        &_icon {
+          background: rgb(41, 82, 227);
+          border-radius: 9999px;
+          @include flex();
+          width: 2.5rem;
+          height: 2.5rem;
+          margin-right: 1.25rem;
+        }
+        &_text {
+          h1 {
+            font-size: 1.125rem;
+            font-weight: 400;
+            line-height: 1.75rem;
+            margin-top: 0.5rem;
+          }
+
+          p {
+            width: 75%;
+            font-size: .875rem;
+            line-height: 1.25rem;
+            margin-top: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
