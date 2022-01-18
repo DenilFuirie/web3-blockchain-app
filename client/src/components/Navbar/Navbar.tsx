@@ -1,13 +1,24 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useContext, useMemo, useState } from 'react';
 import { HiMenuAlt4 } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/ai';
 import { NavbarItem } from './components';
 import logo from '../../images/logo.png';
 import { NavBarItemsList } from './mock';
 import s from './Navbar.module.scss';
+import { TransactionContext } from '../../context/TransactionContext';
+import { shortenAddress } from '../../utils';
 
 const Navbar: FC = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
+  //@ts-ignore
+  const { connectWallet, disconnectWallet, currentAccount } = useContext(TransactionContext);
+
+  const connect = useCallback(() => {
+    if (currentAccount) {
+      disconnectWallet();
+    }
+    connectWallet();
+  }, []);
 
   const showNavbarItems = useMemo(() => {
     return NavBarItemsList.map(({ title, key, classProps }) => (
@@ -39,8 +50,8 @@ const Navbar: FC = () => {
       </div>
       <ul className={s.navigation__items}>
         {showNavbarItems}
-          <li className={s.navigation__connect}>
-              Connect Wallet
+          <li onClick={connect} className={s.navigation__connect}>
+              {currentAccount ? shortenAddress(currentAccount) : 'Connect Wallet'}
           </li>
           <div className={s.navigation__mobile}>
               {showMenu}

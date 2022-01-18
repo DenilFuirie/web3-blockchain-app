@@ -1,28 +1,44 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { ChangeEvent, useContext } from 'react';
 import { SiEthereum } from 'react-icons/si';
 import { BsInfoCircle } from 'react-icons/bs';
 import s from './Welcome.module.scss';
+import { TransactionContext } from '../../context/TransactionContext';
+import { shortenAddress } from '../../utils';
 
 interface InputI {
   placeholder: string;
   name: string;
   type: string;
   value?: string;
+  handleChange: (e: ChangeEvent, name: string) => void;
 }
 
-const Input: React.VFC<InputI> = ({ placeholder, name, type, value = '' }) => (
-    <input
-        name={name}
-        placeholder={placeholder}
-        type={type}
-        step="0.0001"
-        value={value}
-        onChange={() => console.log('123')}
-    />
+const Input: React.VFC<InputI> = ({ placeholder, name, type, value, handleChange }) => (
+  <input
+      name={name}
+      style={{ color: '#fff' }}
+      placeholder={placeholder}
+      type={type}
+      step="0.0001"
+      value={value}
+      onChange={(e) => handleChange(e, name)}
+  />
 );
 
 const Welcome = () => {
+  //@ts-ignore
+  const { currentAccount, formData, sendTransaction, handleChange } = useContext(TransactionContext);
+  // @ts-ignore
+  const handleSubmit = (e) => {
+    const { addressTo, amount, keyword, message } = formData;
+
+    e.preventDefault();
+
+    if (!addressTo || !amount || !keyword || !message) return;
+
+    sendTransaction();
+  };
 
   return (
       <div className={s.welcome}>
@@ -64,7 +80,7 @@ const Welcome = () => {
                 </div>
                 <div className={s.welcome__container_second_card_content_info}>
                   <p>
-                    123444444444444444
+                    {shortenAddress(currentAccount)}
                   </p>
                   <p>
                     Ethereum
@@ -73,11 +89,11 @@ const Welcome = () => {
               </div>
             </div>
             <div className={s.welcome__container_second_form}>
-              <Input placeholder="Address To" name="addressTo" type="text" />
-              <Input placeholder="Amount (ETH)" name="amount" type="number" />
-              <Input placeholder="Keyword (Gif)" name="keyword" type="text" />
-              <Input placeholder="Enter Message" name="message" type="text" />
-              <button>Send</button>
+              <Input placeholder="Address To" name="addressTo" type="text" handleChange={handleChange} />
+              <Input placeholder="Amount (ETH)" name="amount" type="number" handleChange={handleChange} />
+              <Input placeholder="Keyword (Gif)" name="keyword" type="text" handleChange={handleChange} />
+              <Input placeholder="Enter Message" name="message" type="text" handleChange={handleChange} />
+              <button onClick={handleSubmit}>Send</button>
             </div>
           </div>
         </div>

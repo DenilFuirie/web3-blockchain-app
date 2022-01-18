@@ -28,6 +28,7 @@ export const TransactionsProvider = ({ children }) => {
   //@ts-ignore
   const handleChange = (e, name) => {
     setformData((prevState) => ({ ...prevState, [name]: e.target.value }));
+    console.log(formData);
   };
 
   const getAllTransactions = async () => {
@@ -105,6 +106,18 @@ export const TransactionsProvider = ({ children }) => {
     }
   };
 
+  const disconnectWallet = async () => {
+    try {
+      if (!ethereum) return alert('Please install MetaMask.');
+
+      setCurrentAccount('');
+    } catch (error) {
+      console.log(error);
+
+      throw new Error('No ethereum object');
+    }
+  };
+
   const sendTransaction = async () => {
     try {
       if (ethereum) {
@@ -153,6 +166,7 @@ export const TransactionsProvider = ({ children }) => {
             value={{
               transactionCount,
               connectWallet,
+              disconnectWallet,
               transactions,
               currentAccount,
               isLoading,
