@@ -1,12 +1,13 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { HiMenuAlt4 } from 'react-icons/hi';
 import { AiOutlineClose } from 'react-icons/ai';
 import { NavbarItem } from './components';
 import logo from '../../images/logo.png';
 import { NavBarItemsList } from './mock';
+import s from './Navbar.module.scss';
 
 const Navbar: FC = () => {
-  const [toggleMenu, setToggleMenu] = React.useState(false);
+  const [toggleMenu, setToggleMenu] = useState(false);
 
   const showNavbarItems = useMemo(() => {
     return NavBarItemsList.map(({ title, key, classProps }) => (
@@ -17,17 +18,14 @@ const Navbar: FC = () => {
   const showMenu = useMemo(() => (
     <>
       {!toggleMenu && (
-        <HiMenuAlt4 fontSize={28} className="text-white md:hidden cursor-pointer" onClick={() => setToggleMenu(true)} />
+        <HiMenuAlt4 fontSize={28} onClick={() => setToggleMenu(true)} />
       )}
       {toggleMenu && (
-        <AiOutlineClose fontSize={28} className="text-white md:hidden cursor-pointer" onClick={() => setToggleMenu(false)} />
+        <AiOutlineClose fontSize={28} onClick={() => setToggleMenu(false)} />
       )}
       {toggleMenu && (
-        <ul
-          className="z-10 fixed -top-0 -right-2 p-3 w-[70vw] h-screen shadow-2xl md:hidden list-none
-            flex flex-col justify-start items-end rounded-md blue-glassmorphism text-white animate-slide-in"
-        >
-          <li className="text-xl w-full my-2"><AiOutlineClose onClick={() => setToggleMenu(false)} /></li>
+        <ul>
+          <li><AiOutlineClose onClick={() => setToggleMenu(false)} /></li>
           {showNavbarItems}
         </ul>
       )}
@@ -35,19 +33,19 @@ const Navbar: FC = () => {
   ), [toggleMenu]);
 
   return (
-    <nav className="w-full flex md:justify-center justify-between items-center p-4">
-      <div className="md:flex-[0.5] flex-initial justify-center items-center">
-        <img src={logo} alt="logo" className="w-32 cursor-pointer" />
+    <nav className={s.navigation}>
+      <div className={s.navigation__logo}>
+        <img src={logo} alt="logo" />
       </div>
-      <ul className="text-white md:flex hidden list-none flex-row justify-between items-center flex-initial">
+      <ul className={s.navigation__items}>
         {showNavbarItems}
+          <li className={s.navigation__connect}>
+              Connect Wallet
+          </li>
+          <div className={s.navigation__mobile}>
+              {showMenu}
+          </div>
       </ul>
-      <li className="bg-[#2952e3] py-2 px-7 mx-4 rounded-full cursor-pointer hover:bg-[#2546bd]">
-        Login
-      </li>
-      <div className="flex relative">
-        {showMenu}
-      </div>
     </nav>
   );
 };

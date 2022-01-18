@@ -1,0 +1,31 @@
+@import '../../style/mixins/flex';
+
+.navigation {
+  @include flex(space-between, center);
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 1em;
+
+  &__logo {
+    width: 8em;
+  }
+
+  &__items {
+    @include flex(space-between, center);
+    li {
+      margin: 0 1rem;
+      cursor: pointer;
+    }
+  }
+
+  &__connect {
+    padding: .5em 1em;
+    background: dodgerblue;
+    border-radius: 40px;
+  }
+
+  &__mobile {
+    display: none;
+  }
+}
